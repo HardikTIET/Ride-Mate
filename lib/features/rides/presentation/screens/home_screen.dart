@@ -148,20 +148,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             return Container(
                               width: double.infinity,
                               margin: const EdgeInsets.symmetric(horizontal: 0),
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(20),
-                                boxShadow: const [
-                                  BoxShadow(
-                                    color: Colors.black26,
-                                    offset: Offset(0, 4),
-                                    blurRadius: 10,
-                                  ),
-                                ],
-                              ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(20),
                                 child: const Image(
-                                  image: AssetImage(AppImages.bg),
+                                  image: AssetImage(AppImages.sliderImg),
                                   fit: BoxFit.cover,
                                 ),
                               ),
@@ -173,7 +163,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     Spacing.hmed,
                     const TextScroll(
                       delayBefore: Duration(milliseconds: 500),
-                      'You can pay for your active rides from your "Requested Rides" section.',
+                      'You can pay for your active rides from your "Requested Rides" section when accepted.',
                       style: TextStyle(color: Colors.red),
                     ),
                     Spacing.hmed,
@@ -329,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .textTheme
             .bodySmall
             ?.copyWith(color: Colors.black, fontSize: 12),
-        items: destinations
+        items: startingPoints
             .map((String location) {
           return DropdownMenuItem<String>(
             value: location,

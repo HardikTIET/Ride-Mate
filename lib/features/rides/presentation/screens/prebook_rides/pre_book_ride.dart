@@ -227,7 +227,7 @@ class _PreBookRideState extends State<PreBookRide> {
       dropdownColor: Colors.white,
       iconEnabledColor: Colors.black,
       value: _startLocation,
-      items: ['Location 1', 'Location 2', 'Location 3', 'Location 4']
+      items: startingPoints
           .map((String location) {
         return DropdownMenuItem<String>(
           value: location,

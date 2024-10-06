@@ -39,29 +39,14 @@ class RideCubit extends Cubit<RideState> {
     emit(state.copyWith(isLoading: true));
 
     try {
-      final QuerySnapshot canceledRideSnapshot = await ApiUrl.requested_rides
+      await ApiUrl.requested_rides
           .doc(params.userId)
           .collection('rides')
           .where('status', isEqualTo: 'cancelled')
           .get();
 
-      if (canceledRideSnapshot.docs.isNotEmpty) {
-        final existingRideDoc = canceledRideSnapshot.docs.first;
-        await existingRideDoc.reference.update({
-          'status': 'pending',
-          'startLocation': params.startLocation,
-          'endLocation': params.endLocation,
-          'vehicleType': params.vehicleType,
-          'price': params.price,
-          'createdAt': DateTime.now(),
-        });
-
-        showSnackbar('Ride request updated successfully', Colors.green);
-      } else {
-        await sendRideRequestUseCase.call(params);
-        showSnackbar('Ride request sent successfully', Colors.green);
-      }
-
+      await sendRideRequestUseCase.call(params);
+      showSnackbar('Ride request sent successfully', Colors.green);
       isActiveRide = true;
       emit(state.copyWith(isLoading: false));
     } catch (e) {
@@ -94,6 +79,7 @@ class RideCubit extends Cubit<RideState> {
       }
       isActiveRide = false;
       emit(state.copyWith(isLoading: false, allRidesList: updatedList));
+      showSnackbar('Ride Cancelled Succesfully', Colors.green);
     } catch (e) {
       emit(state.copyWith(errorMessage: e.toString(), isLoading: false));
     }
@@ -104,7 +90,7 @@ class RideCubit extends Cubit<RideState> {
     try {
       final result = await cancelRideRequestUseCase.cancelPreBookRide(params);
 
-      final List<RideRequestEntity> updatedList =
+      final List<PreBookRideEntity> updatedList =
           List.from(state.preBookRidesList!);
       final index =
           updatedList.indexWhere((ride) => ride.id == params.requestId);
@@ -112,8 +98,8 @@ class RideCubit extends Cubit<RideState> {
       if (index != -1) {
         updatedList.removeAt(index);
       }
-      isActiveRide = false;
-      emit(state.copyWith(isLoading: false, allRidesList: updatedList));
+      emit(state.copyWith(isLoading: false, preBookRidesList: updatedList));
+      showSnackbar('Ride Cancelled Succesfully', Colors.green);
     } catch (e) {
       emit(state.copyWith(errorMessage: e.toString(), isLoading: false));
     }
@@ -155,7 +141,7 @@ class RideCubit extends Cubit<RideState> {
     try {
       final rides = await getAllRideRequestsForUserUseCase.call(userId);
 
-      if (rides.any((ride) => ride.status == 'active')) {
+      if (rides.any((ride) => ride.status == 'pending')) {
         isActiveRide = true;
       }
     } catch (e) {

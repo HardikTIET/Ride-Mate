@@ -64,3 +64,21 @@ List<String> destinations = [
   'Vyom Hall',
   'Waterbody Cafe (Library)'
 ];
+List<String> startingPoints=[
+  'ATM',
+  'COS',
+  'CS Block',
+  'Fete Area',
+  'Health Care',
+  'Jaggi',
+  'Library',
+  'Main Audi',
+  'Nirvana',
+  'TAN',
+  'TSLAS',
+  'Polytechnic College',
+  'LT',
+  'SBOP Lawns',
+  'Swimming Pool',
+  'E/F Block'
+];

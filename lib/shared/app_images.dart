@@ -8,4 +8,5 @@ class AppImages {
   static const String splash = 'assets/images/splash.gif';
   static const String pay = 'assets/images/pay.jpg';
   static const String campus = 'assets/images/campus.jpeg';
+  static const String sliderImg = 'assets/images/slider.jpeg';
 }

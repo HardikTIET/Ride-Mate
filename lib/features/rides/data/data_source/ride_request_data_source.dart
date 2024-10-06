@@ -95,7 +95,7 @@ class RideRequestDataSourceImpl implements RideRequestDataSource {
   @override
   Future<void> cancelPreBookRideRequest(String requestId, String userId) async {
     try {
-      await ApiUrl.requested_rides
+      await ApiUrl.prebook_rides
           .doc(userId)
           .collection('rides')
           .doc(requestId)
