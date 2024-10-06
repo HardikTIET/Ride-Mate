@@ -144,9 +144,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                           Text(
                             "Sub Total",
                           ),
-                          Text(
-                            "\$40",
-                          ),
+                          Text("\u{20B9}10"),
                         ],
                       ),
                       Spacing.hmed,
@@ -157,7 +155,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             "Tax",
                           ),
                           Text(
-                            "\$4",
+                            "0",
                           ),
                         ],
                       ),
@@ -169,7 +167,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                             "Total",
                           ),
                           Text(
-                            "\$44",
+                            "\u{20B9}10",
                           ),
                         ],
                       ),
@@ -186,7 +184,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                                   SendRequestParams(
                                       startLocation: widget.startLocation ?? "",
                                       endLocation: widget.endLocation,
-                                      price: double.parse('44.0'),
+                                      price: double.parse('10.0'),
                                       userId: userId ?? "",
                                       vehicleType: 'E Rickshaw'));
                             } else {

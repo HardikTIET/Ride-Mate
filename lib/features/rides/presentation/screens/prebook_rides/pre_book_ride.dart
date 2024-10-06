@@ -173,7 +173,7 @@ class _PreBookRideState extends State<PreBookRide> {
                                         startLocation: _startLocation!,
                                         endLocation: _endLocation!,
                                         vehicleType: 'E Rickshaw',
-                                        price: double.parse('44'),
+                                        price: double.parse('10'),
                                 ));
                               } else {
                                 // Show a message to select both date and time

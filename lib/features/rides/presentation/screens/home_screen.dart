@@ -329,7 +329,7 @@ class _HomeScreenState extends State<HomeScreen> {
             .textTheme
             .bodySmall
             ?.copyWith(color: Colors.black, fontSize: 12),
-        items: ['Location 1', 'Location 2', 'Location 3', 'Location 4']
+        items: destinations
             .map((String location) {
           return DropdownMenuItem<String>(
             value: location,

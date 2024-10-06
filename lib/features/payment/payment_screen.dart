@@ -59,7 +59,7 @@ class MerchantScreen extends State<PaymentScreen> {
       "merchantId": merchantId,
       "merchantTransactionId": "MT7850590068188104",
       "merchantUserId": "MUID123",
-      "amount": 4400,
+      "amount": 1000,
       "callbackUrl": callBackUrl,
       "mobileNumber": "9999999999",
       "paymentInstrument": {"type": "PAY_PAGE"}
