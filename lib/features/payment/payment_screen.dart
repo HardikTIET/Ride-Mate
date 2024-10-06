@@ -9,7 +9,9 @@ import 'package:phonepe_payment_sdk/phonepe_payment_sdk.dart';
 class PaymentScreen extends StatefulWidget {
   String? rideId;
   String? userId;
-   PaymentScreen({super.key,this.rideId,this.userId});
+  bool? isPreBook;
+
+  PaymentScreen({super.key, this.rideId, this.userId,  this.isPreBook});
 
   @override
   State<PaymentScreen> createState() => MerchantScreen();
@@ -57,7 +59,7 @@ class MerchantScreen extends State<PaymentScreen> {
       "merchantId": merchantId,
       "merchantTransactionId": "MT7850590068188104",
       "merchantUserId": "MUID123",
-      "amount": 44,
+      "amount": 4400,
       "callbackUrl": callBackUrl,
       "mobileNumber": "9999999999",
       "paymentInstrument": {"type": "PAY_PAGE"}
@@ -79,7 +81,10 @@ class MerchantScreen extends State<PaymentScreen> {
                     String status = response['status'].toString();
                     String error = response['error'].toString();
                     if (status == 'SUCCESS') {
-                      context.read<RideCubit>().paymentCompleted(widget.rideId??"",widget.userId??"");
+                      context.read<RideCubit>().paymentCompleted(
+                          widget.rideId ?? "",
+                          widget.userId ?? "",
+                          widget.isPreBook ?? false);
                       result = "Flow Completed - Status: Success!";
                     } else {
                       result =

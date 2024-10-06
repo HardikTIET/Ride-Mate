@@ -42,10 +42,11 @@ class _SignInScreenState extends State<SignInScreen> {
         builder: (context, state) {
           return Stack(
             children: [
-              Positioned.fill(
+              Positioned(
+                top: 0,
                 child: Image.asset(
-                  AppImages.bg,
-                  alignment: Alignment.centerRight,
+                  AppImages.campus,
+                  alignment: Alignment.topCenter,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -54,7 +55,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 0.6.sh,
+                  height: 0.55.sh,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.vertical(
@@ -124,11 +125,9 @@ class _SignInScreenState extends State<SignInScreen> {
                           height: 0.06.sh,
                           child: ElevatedButton(
                             onPressed: () {
-                              if (context
-                                      .read<SignInCubit>()
-                                      .state
-                                      .isInputValid ==
-                                  false) {
+                              bool isValid =
+                                  context.read<SignInCubit>().inputValidator();
+                              if (isValid == false) {
                                 showSnackbar('Invalid input', Colors.red);
                               } else {
                                 final signInCubit =
@@ -169,8 +168,8 @@ class _SignInScreenState extends State<SignInScreen> {
                                 context.read<UserCubit>().addUser(AuthUser(
                                     id: '',
                                     email: value.email ?? "",
-                                    name: value.name?? "",
-                                    photoURL: value.photoURL??"",
+                                    name: value.name ?? "",
+                                    photoURL: value.photoURL ?? "",
                                     phone: value.phone ?? ""));
                                 Navigator.pushNamed(context, '/Home');
                               });

@@ -7,7 +7,6 @@ import 'package:erickshawapp/features/profile/my_profile.dart';
 import 'package:erickshawapp/features/rides/presentation/screens/prebook_rides/pre_book_rides_list_view.dart';
 import 'package:erickshawapp/features/settings/change_password.dart';
 import 'package:erickshawapp/features/settings/settings_view.dart';
-import 'package:erickshawapp/features/wallet/my_wallet.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../features/rides/presentation/screens/check_out.dart';
@@ -40,10 +39,6 @@ Route<dynamic> generateRoute(RouteSettings settings) {
     case '/MyRides':
       return MaterialPageRoute(
         builder: (context) => MyRides(),
-      );
-    case '/MyWallet':
-      return MaterialPageRoute(
-        builder: (context) => MyWallet(),
       );
     case '/Settings':
       return MaterialPageRoute(

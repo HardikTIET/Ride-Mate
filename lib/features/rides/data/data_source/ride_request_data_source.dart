@@ -1,5 +1,6 @@
 import 'package:erickshawapp/core/api/api_url.dart';
 import 'package:erickshawapp/features/rides/data/model/pre_book_ride_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../model/ride_request_model.dart';
 
 abstract class RideRequestDataSource {
@@ -14,7 +15,9 @@ abstract class RideRequestDataSource {
 
   Future<RideRequest> getRideRequestDetails(String requestId);
 
-  Future<void> cancelRideRequest(String requestId,String userId);
+  Future<void> cancelRideRequest(String requestId, String userId);
+  Future<void> cancelPreBookRideRequest(String requestId, String userId);
+
 
   Future<void> sendPreBookRideRequest(
       {required String userId,
@@ -43,6 +46,10 @@ class RideRequestDataSourceImpl implements RideRequestDataSource {
       final rideRequest = RideRequest(
           id: rideRequestRef.id,
           userId: userId,
+          preBookRideTime: '',
+          preBookRideDate: '',
+          isScheduled: false,
+          userName: FirebaseAuth.instance.currentUser?.displayName ?? '',
           startLocation: startLocation,
           endLocation: endLocation,
           vehicleType: vehicleType,
@@ -71,9 +78,28 @@ class RideRequestDataSourceImpl implements RideRequestDataSource {
   }
 
   @override
-  Future<void> cancelRideRequest(String requestId,String userId) async {
+  Future<void> cancelRideRequest(String requestId, String userId) async {
     try {
-      await ApiUrl.requested_rides.doc(userId).collection('rides').doc(requestId).update({
+      await ApiUrl.requested_rides
+          .doc(userId)
+          .collection('rides')
+          .doc(requestId)
+          .update({
+        'status': 'cancelled',
+      });
+    } catch (e) {
+      throw Exception('Failed to cancel ride request: $e');
+    }
+  }
+
+  @override
+  Future<void> cancelPreBookRideRequest(String requestId, String userId) async {
+    try {
+      await ApiUrl.requested_rides
+          .doc(userId)
+          .collection('rides')
+          .doc(requestId)
+          .update({
         'status': 'cancelled',
       });
     } catch (e) {
@@ -110,11 +136,14 @@ class RideRequestDataSourceImpl implements RideRequestDataSource {
 
       final rideRequest = PreBookRideModel(
           date: date,
+          id: rideRequestRef.id,
           time: time,
           userId: userId,
+          userName: FirebaseAuth.instance.currentUser?.displayName??"",
           startLocation: startLocation,
           endLocation: endLocation,
           vehicleType: vehicleType,
+          isScheduled: true,
           price: price,
           status: 'pending',
           createdAt: DateTime.now());

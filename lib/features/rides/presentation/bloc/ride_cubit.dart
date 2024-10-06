@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/api/api_url.dart';
+import '../../domain/entity/pre_book_ride_entity.dart';
 import '../../domain/usecase/cancel_ride.usecase.dart';
 import '../../domain/usecase/get_all_rides.usecase.dart';
 import '../../domain/usecase/get_requested_ride_details.usecase.dart';
@@ -98,6 +99,26 @@ class RideCubit extends Cubit<RideState> {
     }
   }
 
+  Future<void> cancelPreBookRideRequest(CancelRequestParams params) async {
+    emit(state.copyWith(isLoading: true));
+    try {
+      final result = await cancelRideRequestUseCase.cancelPreBookRide(params);
+
+      final List<RideRequestEntity> updatedList =
+          List.from(state.preBookRidesList!);
+      final index =
+          updatedList.indexWhere((ride) => ride.id == params.requestId);
+
+      if (index != -1) {
+        updatedList.removeAt(index);
+      }
+      isActiveRide = false;
+      emit(state.copyWith(isLoading: false, allRidesList: updatedList));
+    } catch (e) {
+      emit(state.copyWith(errorMessage: e.toString(), isLoading: false));
+    }
+  }
+
   Future<void> getAllRidesList(String userId) async {
     emit(state.copyWith(isLoading: true));
     try {
@@ -144,27 +165,52 @@ class RideCubit extends Cubit<RideState> {
     }
   }
 
-  Future<void> paymentCompleted(String requestId,String userId) async {
-    final List<RideRequestEntity> updatedList = List.from(state.allRidesList!);
-    final index = updatedList.indexWhere((ride) => ride.id == requestId);
+  Future<void> paymentCompleted(
+      String requestId, String userId, bool isPreBook) async {
+    if (isPreBook == false) {
+      final List<RideRequestEntity> updatedList =
+          List.from(state.allRidesList!);
+      final index = updatedList.indexWhere((ride) => ride.id == requestId);
 
-    if (index != -1) {
-      updatedList[index] = updatedList[index].copyWith(status: 'completed');
+      if (index != -1) {
+        updatedList[index] = updatedList[index].copyWith(status: 'completed');
 
-      try {
-        await FirebaseFirestore.instance
-            .collection('requested_rides')
-            .doc(userId)
-            .collection('rides')
-            .doc(requestId)
-            .update({'status': 'completed'});
-     isActiveRide=false;
-        showSnackbar('You have successfully completed your ride', Colors.green);
-      } catch (e) {
-        showSnackbar('Error updating ride status: $e', Colors.red);
+        try {
+          await ApiUrl.requested_rides
+              .doc(userId)
+              .collection('rides')
+              .doc(requestId)
+              .update({'status': 'completed'});
+          isActiveRide = false;
+          showSnackbar(
+              'You have successfully completed your ride', Colors.green);
+          emit(state.copyWith(allRidesList: updatedList));
+        } catch (e) {
+          showSnackbar('Error updating ride status: $e', Colors.red);
+        }
       }
+    } else {
+      final List<PreBookRideEntity> updatedList =
+          List.from(state.preBookRidesList!);
+      final index = updatedList.indexWhere((ride) => ride.id == requestId);
 
-      emit(state.copyWith(allRidesList: updatedList));
+      if (index != -1) {
+        updatedList[index] = updatedList[index].copyWith(status: 'completed');
+
+        try {
+          await ApiUrl.prebook_rides
+              .doc(userId)
+              .collection('rides')
+              .doc(requestId)
+              .update({'status': 'completed'});
+          isActiveRide = false;
+          showSnackbar(
+              'You have successfully completed your ride', Colors.green);
+          emit(state.copyWith(preBookRidesList: updatedList));
+        } catch (e) {
+          showSnackbar('Error updating ride status: $e', Colors.red);
+        }
+      }
     }
   }
 }

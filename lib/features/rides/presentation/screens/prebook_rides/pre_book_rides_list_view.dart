@@ -1,5 +1,6 @@
 import 'package:erickshawapp/features/rides/presentation/bloc/ride_cubit.dart';
 import 'package:erickshawapp/features/rides/presentation/bloc/ride_state.dart';
+import 'package:erickshawapp/features/rides/presentation/screens/prebook_rides/pre_book_ride.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -8,7 +9,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import '../../../../../shared/app_images.dart';
 import '../../../../../shared/constants.dart';
+import '../../../../../shared/dialog.dart';
 import '../../../../drawer.dart';
+import '../../../../payment/payment_screen.dart';
+import '../../../domain/usecase/cancel_ride.usecase.dart';
 
 class MyPreBookRides extends StatefulWidget {
   const MyPreBookRides({super.key});
@@ -90,8 +94,7 @@ class _MyRidesState extends State<MyPreBookRides> {
                     children: [
                       if (state.isLoading == true) ...[
                         const Center(child: CircularProgressIndicator())
-                      ]
-                      else ...[
+                      ] else ...[
                         if ((state.preBookRidesList ?? []).isEmpty) ...[
                           const Center(child: Text("No Request Yet"))
                         ] else ...[
@@ -175,12 +178,73 @@ class _MyRidesState extends State<MyPreBookRides> {
                                           width: double.infinity,
                                           child: OutlinedButton(
                                               onPressed: () {
-                                                // Navigator.pushNamed(
-                                                //     context, '/CheckOut');
+                                                if (item.status == 'accepted') {
+                                                  Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PaymentScreen(
+                                                          rideId: item.id,
+                                                          userId: currentUser
+                                                                  ?.uid ??
+                                                              "",
+                                                              isPreBook: true,
+                                                        ),
+                                                      ));
+                                                }
                                               },
-                                              child: Text(item.status)),
+                                              child: Text(item.status ==
+                                                          'completed'
+                                                  ? 'Completed'
+                                                  : item.status == 'accepted'
+                                                      ? 'Pay For Ride'
+                                                      : item.status)),
                                         ),
-                                      )
+                                      ),
+                                      if (item.status == 'pending' ||
+                                          item.status == 'accepted')
+                                        Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 8, right: 8),
+                                          child: SizedBox(
+                                            width: double.infinity,
+                                            child: OutlinedButton(
+                                                onPressed: () {
+                                                  showDeleteDialog(
+                                                      context: context,
+                                                      onTap: () {
+                                                        context
+                                                            .read<RideCubit>()
+                                                            .cancelPreBookRideRequest(
+                                                                CancelRequestParams(
+                                                                    userId:
+                                                                        currentUser?.uid ??
+                                                                            "",
+                                                                    requestId:
+                                                                        item.id));
+                                                      });
+                                                },
+                                                style: OutlinedButton.styleFrom(
+                                                  side: const BorderSide(
+                                                      color: Colors.red),
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8.0),
+                                                  ),
+                                                ),
+                                                child: Text(
+                                                  'Cancel',
+                                                  style: Theme.of(context)
+                                                      .textTheme
+                                                      .bodyMedium
+                                                      ?.copyWith(
+                                                          color: Colors.red,
+                                                          fontWeight:
+                                                              FontWeight.bold),
+                                                )),
+                                          ),
+                                        ),
                                     ],
                                   ),
                                 );

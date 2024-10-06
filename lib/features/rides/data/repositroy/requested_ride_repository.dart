@@ -14,6 +14,8 @@ abstract class RideRequestRepository {
   Future<RideRequestEntity> getRideRequestDetails(String requestId);
 
   Future<void> cancelRideRequest(String requestId,String userId);
+  Future<void> cancelPreBookRideRequest(String requestId, String userId);
+
 
   Future<List<RideRequestEntity>> getAllRideRequestsForUser(String userId);
 

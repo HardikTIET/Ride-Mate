@@ -22,7 +22,36 @@
           }
         },
         {
-          "client_id": "833929657333-mkvo1s08icrvth4mn6e9rathvkff2m1m.apps.googleusercontent.com",
+          "client_id": "833929657333-uimq7gc5vi3m6lr9pmu7aoq38vp65sji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAHcC1ciA59pz4WrNCS9KBP3d0FY4Xexm4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "833929657333-mkvo1s08icrvth4mn6e9rathvkff2m1m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:833929657333:android:2780164259068f977bfebc",
+        "android_client_info": {
+          "package_name": "com.example.rickshaw_driver_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "833929657333-uimq7gc5vi3m6lr9pmu7aoq38vp65sji.apps.googleusercontent.com",
           "client_type": 3
         }
       ],

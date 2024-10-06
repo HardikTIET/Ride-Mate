@@ -45,6 +45,8 @@ class AppTheme {
         bodySmall: AppFont.normal.s12.copyWith(color: Colors.black),
         bodyMedium: AppFont.normal.s14.copyWith(color: Colors.black),
         bodyLarge: AppFont.normal.s20.copyWith(color: Colors.black),
+        displayMedium: AppFont.normal.s14
+            .copyWith(color: isDark ? Colors.white : Colors.black),
       ),
     );
   }

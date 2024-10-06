@@ -58,6 +58,8 @@ class SignUpState extends Equatable {
     emailStatus,
     passwordStatus,
     isInputValid,
-    isLoading
+    isLoading,
+    userName,
+    phone
   ];
 }

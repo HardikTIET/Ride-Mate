@@ -30,6 +30,7 @@ class RideRequestRepositoryImpl implements RideRequestRepository {
     }
   }
 
+
   @override
   Future<RideRequestEntity> getRideRequestDetails(String requestId) async {
     try {
@@ -45,6 +46,14 @@ class RideRequestRepositoryImpl implements RideRequestRepository {
   Future<void> cancelRideRequest(String requestId,String userId) async {
     try {
       await dataSource.cancelRideRequest(requestId,userId);
+    } catch (e) {
+      throw Exception('Failed to cancel ride request: $e');
+    }
+  }
+  @override
+  Future<void> cancelPreBookRideRequest(String requestId,String userId) async {
+    try {
+      await dataSource.cancelPreBookRideRequest(requestId,userId);
     } catch (e) {
       throw Exception('Failed to cancel ride request: $e');
     }

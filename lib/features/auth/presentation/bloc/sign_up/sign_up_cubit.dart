@@ -15,7 +15,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         state.copyWith(
             email: email,
             emailStatus: EmailStatus.valid,
-            isInputValid: inputValidator()),
+        ),
       );
     } else {
       emit(state.copyWith(emailStatus: EmailStatus.invalid));
@@ -30,7 +30,7 @@ class SignUpCubit extends Cubit<SignUpState> {
         state.copyWith(
             password: password,
             passwordStatus: PasswordStatus.valid,
-            isInputValid: inputValidator()),
+        ),
       );
     } else {
       emit(state.copyWith(passwordStatus: PasswordStatus.invalid));
@@ -39,13 +39,13 @@ class SignUpCubit extends Cubit<SignUpState> {
 
   void usernameChanged(String name) async {
     if (name.isNotEmpty) {
-      emit(state.copyWith(userName: name, isInputValid: inputValidator()));
+      emit(state.copyWith(userName: name,));
     }
   }
 
   void phoneChanged(String phone) async {
     if (phone.isNotEmpty && phone.length == 10) {
-      emit(state.copyWith(phone: phone, isInputValid: inputValidator()));
+      emit(state.copyWith(phone: phone));
     }
   }
 

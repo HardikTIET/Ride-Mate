@@ -1,7 +1,5 @@
-
 import 'package:erickshawapp/features/auth/presentation/bloc/sign_in/sign_in_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 
 class SignInCubit extends Cubit<SignInState> {
   SignInCubit() : super(const SignInState());
@@ -16,7 +14,7 @@ class SignInCubit extends Cubit<SignInState> {
         state.copyWith(
             email: email,
             emailStatus: EmailStatus.valid,
-            isInputValid: inputValidator()),
+        ),
       );
     } else {
       emit(state.copyWith(emailStatus: EmailStatus.invalid));
@@ -31,14 +29,12 @@ class SignInCubit extends Cubit<SignInState> {
         state.copyWith(
             password: password,
             passwordStatus: PasswordStatus.valid,
-            isInputValid: inputValidator()),
+        ),
       );
     } else {
       emit(state.copyWith(passwordStatus: PasswordStatus.invalid));
     }
   }
-
-
 
   bool inputValidator() {
     if (!(state.emailStatus == EmailStatus.valid) ||

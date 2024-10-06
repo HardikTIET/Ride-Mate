@@ -16,4 +16,7 @@ class CancelRideRequestUseCase {
   Future<void> call(CancelRequestParams params) async {
     return await rideRequestRepository.cancelRideRequest(params.requestId,params.userId);
   }
+  Future<void> cancelPreBookRide(CancelRequestParams params) async {
+    return await rideRequestRepository.cancelPreBookRideRequest(params.requestId,params.userId);
+  }
 }

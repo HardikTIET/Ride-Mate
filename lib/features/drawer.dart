@@ -108,22 +108,6 @@ class CustomDrawer extends StatelessWidget {
                 ),
                 ListTile(
                   leading: const Icon(
-                    Icons.wallet,
-                    color: Colors.black,
-                  ),
-                  title: Text(
-                    'My Wallet',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.bold),
-                  ),
-                  onTap: () {
-                    Navigator.pushNamed(context, '/MyWallet');
-                  },
-                ),
-                ListTile(
-                  leading: const Icon(
                     Icons.settings,
                     color: Colors.black,
                   ),

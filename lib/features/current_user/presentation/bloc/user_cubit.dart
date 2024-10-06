@@ -28,6 +28,7 @@ class UserCubit extends Cubit<UserState> {
   }) : super(UserState());
 
   // late AuthUser? authUser;
+  User? currentUser = FirebaseAuth.instance.currentUser;
 
   Future<void> fetchUser(String email) async {
     emit(state.copyWith(isLoading: true));
@@ -57,14 +58,12 @@ class UserCubit extends Cubit<UserState> {
     emit(state.copyWith(isLoading: true));
     try {
       await updateUserUseCase.call(authUser);
-      emit(state.copyWith(
-          isLoading: false,
-          authUser: AuthUser(
-              id: '',
-              email: authUser.email,
-              photoURL: authUser.photoURL,
-              phone: authUser.phone,
-              name: authUser.name)));
+      AuthUser authUserUpdated = state.authUser!.copyWith(
+        id: currentUser?.uid ?? "",
+        phone: authUser.phone ?? (currentUser?.phoneNumber ?? ""),
+        name: authUser.name ?? (currentUser?.displayName ?? ""),
+      );
+      emit(state.copyWith(isLoading: false, authUser: authUserUpdated));
       showSnackbar('Successfully Updated', Colors.green);
     } catch (e) {
       emit(state.copyWith(isLoading: false));
@@ -111,14 +110,10 @@ class UserCubit extends Cubit<UserState> {
           // Assuming that email is unique and we only expect one document
           final docRef = querySnapshot.docs.first.reference;
 
-          await docRef.update({'photoURL': imageUrl});
-          AuthUser updatedUser = AuthUser(
-            id: user.uid,
-            email: userEmail,
-            photoURL: imageUrl,
-            name: user.displayName,
-            phone: user.phoneNumber,
-          );
+          await docRef.set({'photoURL': imageUrl}, SetOptions(merge: true));
+
+          AuthUser updatedUser = state.authUser!.copyWith(photoURL: imageUrl);
+
           emit(state.copyWith(authUser: updatedUser, isLoading: false));
           showSnackbar('Image Uploaded Successfully', Colors.green);
         } else {

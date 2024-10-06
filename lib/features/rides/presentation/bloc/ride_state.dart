@@ -38,5 +38,5 @@ class RideState extends Equatable {
   }
 
   @override
-  List<Object?> get props => [isLoading, rideRequestEntity, errorMessage,allRidesList,rideStatus];
+  List<Object?> get props => [isLoading, rideRequestEntity, errorMessage,allRidesList,rideStatus,preBookRidesList];
 }

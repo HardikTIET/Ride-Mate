@@ -42,10 +42,11 @@ class _SignInScreenState extends State<SignUpScreen> {
         builder: (context, state) {
           return Stack(
             children: [
-              Positioned.fill(
+              Positioned(
+                top: 0,
                 child: Image.asset(
-                  AppImages.bg,
-                  alignment: Alignment.centerRight,
+                  AppImages.campus,
+                  alignment: Alignment.topCenter,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -154,11 +155,9 @@ class _SignInScreenState extends State<SignUpScreen> {
                           height: 0.06.sh,
                           child: ElevatedButton(
                             onPressed: () {
-                              if (context
-                                      .read<SignUpCubit>()
-                                      .state
-                                      .isInputValid ==
-                                  false) {
+                              final isValid =
+                                  context.read<SignUpCubit>().inputValidator();
+                              if (isValid == false) {
                                 showSnackbar('Invalid Input', Colors.red);
                               } else {
                                 final signUpCubitState =
