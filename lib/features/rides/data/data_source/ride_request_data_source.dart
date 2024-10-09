@@ -16,8 +16,8 @@ abstract class RideRequestDataSource {
   Future<RideRequest> getRideRequestDetails(String requestId);
 
   Future<void> cancelRideRequest(String requestId, String userId);
-  Future<void> cancelPreBookRideRequest(String requestId, String userId);
 
+  Future<void> cancelPreBookRideRequest(String requestId, String userId);
 
   Future<void> sendPreBookRideRequest(
       {required String userId,
@@ -46,6 +46,7 @@ class RideRequestDataSourceImpl implements RideRequestDataSource {
       final rideRequest = RideRequest(
           id: rideRequestRef.id,
           userId: userId,
+          driverId: '',
           preBookRideTime: '',
           preBookRideDate: '',
           isScheduled: false,
@@ -138,8 +139,9 @@ class RideRequestDataSourceImpl implements RideRequestDataSource {
           date: date,
           id: rideRequestRef.id,
           time: time,
+          driverId: '',
           userId: userId,
-          userName: FirebaseAuth.instance.currentUser?.displayName??"",
+          userName: FirebaseAuth.instance.currentUser?.displayName ?? "",
           startLocation: startLocation,
           endLocation: endLocation,
           vehicleType: vehicleType,

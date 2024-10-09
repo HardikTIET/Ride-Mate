@@ -27,7 +27,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
 
   @override
   void initState() {
-    context.read<RideCubit>().hasActiveRide(userId!);
+
     super.initState();
   }
 
@@ -177,7 +177,8 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         width: double.infinity,
                         height: 0.06.sh,
                         child: ElevatedButton(
-                          onPressed: () {
+                          onPressed: ()async {
+                          await  context.read<RideCubit>().hasActiveRide(userId!);
                             if (context.read<RideCubit>().isActiveRide ==
                                 false) {
                               context.read<RideCubit>().sendRideRequest(

@@ -66,9 +66,12 @@ class AuthCubit extends Cubit<AuthState> {
           await ApiUrl.users.where('email', isEqualTo: user.email).get();
 
       if (querySnapshot.docs.isEmpty) {
-        onSuccess(user);
-      }
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setBool('isLoggedIn', true);
+        showSnackbar('Login Successfully', Colors.green);
 
+      }
+      onSuccess(user);
       emit(state.copyWith(authUser: user, isLoading: false));
     } catch (err) {
       print(err.toString());
@@ -132,5 +135,4 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(isLoading: false));
     }
   }
-
 }

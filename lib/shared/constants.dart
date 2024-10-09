@@ -9,16 +9,22 @@ const kAppName = 'User RideMate';
 // Spacings
 class Spacing {
   static SizedBox get hlg => SizedBox(height: Insets.lg);
+
   static SizedBox get hxs => SizedBox(height: Insets.xs);
+
   static SizedBox get hsm => SizedBox(height: Insets.sm);
+
   static SizedBox get hmed => SizedBox(height: Insets.med);
 
   static SizedBox get bottomViewInset =>
       const SizedBox(height: kToolbarHeight - 20);
 
   static SizedBox get wxs => SizedBox(width: Insets.xs);
+
   static SizedBox get wsm => SizedBox(width: Insets.sm);
+
   static SizedBox get wmed => SizedBox(width: Insets.med);
+
   static SizedBox get wlg => SizedBox(width: Insets.lg);
 
   static smallHeight() {
@@ -62,9 +68,7 @@ List<String> destinations = [
   'Viyat Hall',
   'Vyan Hall',
   'Vyom Hall',
-  'Waterbody Cafe (Library)'
-];
-List<String> startingPoints=[
+  'Waterbody Cafe (Library)',
   'ATM',
   'COS',
   'CS Block',

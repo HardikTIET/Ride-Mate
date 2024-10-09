@@ -144,10 +144,10 @@ class RideCubit extends Cubit<RideState> {
       if (rides.any((ride) => ride.status == 'pending')) {
         isActiveRide = true;
       }
+      isActiveRide=false;
+      print(isActiveRide);
     } catch (e) {
       emit(state.copyWith(errorMessage: e.toString()));
-    } finally {
-      emit(state.copyWith(isLoading: false));
     }
   }
 

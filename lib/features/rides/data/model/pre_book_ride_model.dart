@@ -15,6 +15,7 @@ class PreBookRideModel extends Equatable {
   final bool isScheduled;
   final String status;
   final String userName;
+  final String driverId;
   final DateTime createdAt;
 
   const PreBookRideModel({
@@ -22,6 +23,7 @@ class PreBookRideModel extends Equatable {
     required this.id,
     required this.date,
     required this.time,
+    required this.driverId,
     required this.startLocation,
     required this.endLocation,
     required this.vehicleType,
@@ -36,6 +38,7 @@ class PreBookRideModel extends Equatable {
     return {
       'userId': userId,
       'id': id,
+      'driverId': driverId,
       'username': userName,
       'date': date.toIso8601String(),
       'time': time.toString(),
@@ -57,6 +60,7 @@ class PreBookRideModel extends Equatable {
         time: map['time'] ?? "",
         startLocation: map['startLocation'] ?? '',
         endLocation: map['endLocation'] ?? '',
+        driverId: map['driverId'] ?? "",
         vehicleType: map['vehicleType'] ?? '',
         userName: map['userName'] ?? "",
         createdAt: (map['createdAt'] as Timestamp?)?.toDate() ?? DateTime.now(),
@@ -86,6 +90,7 @@ class PreBookRideModel extends Equatable {
         userId,
         date,
         time,
+        driverId,
         startLocation,
         endLocation,
         vehicleType,

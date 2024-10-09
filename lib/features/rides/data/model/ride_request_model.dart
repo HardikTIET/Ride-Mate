@@ -16,10 +16,12 @@ class RideRequest extends Equatable {
   final bool isScheduled;
   final String preBookRideDate;
   final String preBookRideTime;
+  final String driverId;
 
   const RideRequest(
       {required this.id,
         required this.userId,
+        required this.driverId,
         required this.startLocation,
         required this.endLocation,
         required this.vehicleType,
@@ -34,6 +36,7 @@ class RideRequest extends Equatable {
   Map<String, dynamic> toMap() {
     return {
       'id': id,
+      'driverId':driverId,
       'userId': userId,
       'startLocation': startLocation,
       'endLocation': endLocation,
@@ -53,6 +56,7 @@ class RideRequest extends Equatable {
 
     return RideRequest(
       id: map['id'] ?? '',
+      driverId: map['driverId'],
       userId: map['userId'] ?? '', // Ensure to handle null values properly
       isScheduled: map['isScheduled'] ?? false, // Make sure this is a boolean
       startLocation: map['startLocation'] ?? '',
@@ -73,6 +77,7 @@ class RideRequest extends Equatable {
     id,
     startLocation,
     endLocation,
+    driverId,
     vehicleType,
     price,
     status,
