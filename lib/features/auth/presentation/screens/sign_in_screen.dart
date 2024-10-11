@@ -54,7 +54,7 @@ class _SignInScreenState extends State<SignInScreen> {
                 left: 0,
                 right: 0,
                 child: Container(
-                  height: 0.55.sh,
+                  height: 0.6.sh,
                   decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.vertical(
@@ -121,7 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         Spacing.hlg,
                         SizedBox(
                           width: double.infinity,
-                          height: 0.06.sh,
+                          height: 0.04.sh,
                           child: ElevatedButton(
                             onPressed: () {
                               bool isValid =

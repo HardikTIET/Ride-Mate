@@ -1,6 +1,7 @@
 import 'package:erickshawapp/design-system/styles.dart';
 import 'package:erickshawapp/features/rides/domain/usecase/pre_book_ride.usecase.dart';
 import 'package:erickshawapp/features/rides/presentation/bloc/ride_cubit.dart';
+import 'package:erickshawapp/shared/toast_alert.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -162,26 +163,23 @@ class _PreBookRideState extends State<PreBookRide> {
                               // Confirm booking logic here
                               if (_selectedDate != null &&
                                   _selectedTime != null &&
-                                  _startLocation!.isNotEmpty &&
-                                  _endLocation!.isNotEmpty) {
+                                  _startLocation!=null && _startLocation!.isNotEmpty &&
+                                  _endLocation!=null && _endLocation!.isNotEmpty) {
                                 context
                                     .read<RideCubit>()
                                     .sendPreBookRideRequest(PreBookRideParams(
-                                        userId: userId!,
-                                        date: _selectedDate!,
-                                        time: formatTimeOfDay(_selectedTime!),
-                                        startLocation: _startLocation!,
-                                        endLocation: _endLocation!,
-                                        vehicleType: 'E Rickshaw',
-                                        price: double.parse('10'),
-                                ));
+                                      userId: userId!,
+                                      date: _selectedDate!,
+                                      time: formatTimeOfDay(_selectedTime!),
+                                      startLocation: _startLocation!,
+                                      endLocation: _endLocation!,
+                                      vehicleType: 'E Rickshaw',
+                                      price: double.parse('10'),
+                                    ));
                               } else {
                                 // Show a message to select both date and time
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Please fill all fields'),
-                                  ),
-                                );
+                              showSnackbar('Please fill all fields', Colors.red);
+
                               }
                             },
                             style: ElevatedButton.styleFrom(
@@ -227,8 +225,7 @@ class _PreBookRideState extends State<PreBookRide> {
       dropdownColor: Colors.white,
       iconEnabledColor: Colors.black,
       value: _startLocation,
-      items: destinations
-          .map((String location) {
+      items: destinations.map((String location) {
         return DropdownMenuItem<String>(
           value: location,
           child: Text(
@@ -281,10 +278,11 @@ class _PreBookRideState extends State<PreBookRide> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    final DateTime now = DateTime.now();
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: _selectedDate ?? DateTime.now(),
-      firstDate: DateTime(2000),
+      initialDate: _selectedDate ?? now,
+      firstDate: now,
       lastDate: DateTime(2101),
     );
     if (picked != null && picked != _selectedDate) {
@@ -296,15 +294,56 @@ class _PreBookRideState extends State<PreBookRide> {
   }
 
   Future<void> _selectTime(BuildContext context) async {
+    final TimeOfDay now = TimeOfDay.now();
+    final DateTime nowDateTime = DateTime.now();
+
+    // Calculate the time 30 minutes from now
+    final DateTime nowPlus30Minutes = nowDateTime.add(Duration(minutes: 30));
+    final TimeOfDay minSelectableTime =
+        TimeOfDay.fromDateTime(nowPlus30Minutes);
+
     final TimeOfDay? picked = await showTimePicker(
       context: context,
-      initialTime: _selectedTime ?? TimeOfDay.now(),
+      initialTime: _selectedTime ?? minSelectableTime,
     );
+
     if (picked != null && picked != _selectedTime) {
-      setState(() {
-        _selectedTime = picked;
-        _timeController.text = _selectedTime!.format(context);
-      });
+      // Convert the picked time to a comparable DateTime
+      final DateTime pickedDateTime = DateTime(
+        _selectedDate?.year ?? nowDateTime.year,
+        _selectedDate?.month ?? nowDateTime.month,
+        _selectedDate?.day ?? nowDateTime.day,
+        picked.hour,
+        picked.minute,
+      );
+
+      // Check if a date is selected
+      if (_selectedDate != null) {
+        // Check if the selected date is today
+        if (_selectedDate!.year == nowDateTime.year &&
+            _selectedDate!.month == nowDateTime.month &&
+            _selectedDate!.day == nowDateTime.day) {
+          // Apply the 30-minute rule for the current day
+          if (pickedDateTime.isBefore(nowPlus30Minutes)) {
+            showSnackbar("Please select a time at least 30 minutes from now.",
+                Colors.red);
+          } else {
+            setState(() {
+              _selectedTime = picked;
+              _timeController.text = _selectedTime!.format(context);
+            });
+          }
+        } else {
+          // Allow any time for future dates
+          setState(() {
+            _selectedTime = picked;
+            _timeController.text = _selectedTime!.format(context);
+          });
+        }
+      } else {
+        // Handle case where no date is selected (optional)
+        showSnackbar("Please select a date first.", Colors.red);
+      }
     }
   }
 
