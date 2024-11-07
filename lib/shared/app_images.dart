@@ -9,4 +9,5 @@ class AppImages {
   static const String pay = 'assets/images/pay.jpg';
   static const String campus = 'assets/images/campus.jpeg';
   static const String sliderImg = 'assets/images/slider.jpeg';
+  static const String logo = 'assets/images/logo.jpeg';
 }

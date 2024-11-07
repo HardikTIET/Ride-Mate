@@ -178,7 +178,7 @@ class _CheckOutScreenState extends State<CheckOutScreen> {
                         height: 0.06.sh,
                         child: ElevatedButton(
                           onPressed: ()async {
-                          await  context.read<RideCubit>().hasActiveRide(userId!);
+                         // await  context.read<RideCubit>().hasActiveRide(userId!);
                             if (context.read<RideCubit>().isActiveRide ==
                                 false) {
                               context.read<RideCubit>().sendRideRequest(
